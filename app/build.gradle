@@ -27,12 +27,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.github.blackfizz:eazegraph:1.2.2@aar'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.facebook.stetho:stetho:1.4.2'
     testCompile 'junit:junit:4.12'
     compile rootProject.ext.dependencies.rxjava
     compile rootProject.ext.dependencies.rxandroid
     compile 'com.google.code.gson:gson:2.2.4'
+    compile project(':chartlib')
 }

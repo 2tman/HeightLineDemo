@@ -1,4 +1,4 @@
-package iandroid.club.heightlinedemo.utils;
+package iandroid.club.chartlib.util;
 
 /**
  * @Description: x轴文本格式化

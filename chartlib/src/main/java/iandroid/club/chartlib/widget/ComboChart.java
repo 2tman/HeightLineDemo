@@ -1,4 +1,4 @@
-package iandroid.club.heightlinedemo.widget;
+package iandroid.club.chartlib.widget;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
@@ -8,8 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import iandroid.club.heightlinedemo.utils.LogUtils;
-import iandroid.club.heightlinedemo.utils.Utils;
 
 
 /**

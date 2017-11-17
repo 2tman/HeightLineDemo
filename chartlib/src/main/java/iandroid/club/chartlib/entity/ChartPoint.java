@@ -1,4 +1,4 @@
-package iandroid.club.heightlinedemo.entity;
+package iandroid.club.chartlib.entity;
 
 /**
  * @Description:

@@ -1,4 +1,4 @@
-package iandroid.club.heightlinedemo.entity;
+package iandroid.club.chartlib.entity;
 
 /**
  * Created by 加荣 on 2017/7/28.

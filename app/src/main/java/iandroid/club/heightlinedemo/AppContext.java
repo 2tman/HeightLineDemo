@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 
-import iandroid.club.heightlinedemo.utils.LogUtils;
-import iandroid.club.heightlinedemo.utils.Utils;
+import iandroid.club.chartlib.util.LogUtils;
+import iandroid.club.chartlib.util.Utils;
 
 /**
  * Created by 加荣 on 2017/7/28.

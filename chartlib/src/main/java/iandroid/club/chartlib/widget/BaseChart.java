@@ -1,4 +1,4 @@
-package iandroid.club.heightlinedemo.widget;
+package iandroid.club.chartlib.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,8 +16,8 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import iandroid.club.heightlinedemo.utils.ScreenUtils;
-import iandroid.club.heightlinedemo.utils.Utils;
+import iandroid.club.chartlib.util.ScreenUtils;
+import iandroid.club.chartlib.util.Utils;
 
 
 /**

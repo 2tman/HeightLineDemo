@@ -1,4 +1,4 @@
-package iandroid.club.heightlinedemo.widget;
+package iandroid.club.chartlib.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,8 +7,6 @@ import android.graphics.DashPathEffect;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
@@ -21,12 +19,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import iandroid.club.heightlinedemo.entity.ChartPoint;
-import iandroid.club.heightlinedemo.entity.DataSet;
-import iandroid.club.heightlinedemo.entity.LineEntity;
-import iandroid.club.heightlinedemo.utils.LogUtils;
-import iandroid.club.heightlinedemo.utils.ScreenUtils;
-import iandroid.club.heightlinedemo.utils.Utils;
+import iandroid.club.chartlib.entity.ChartPoint;
+import iandroid.club.chartlib.entity.DataSet;
+import iandroid.club.chartlib.entity.LineEntity;
+import iandroid.club.chartlib.util.LogUtils;
+import iandroid.club.chartlib.util.ScreenUtils;
+import iandroid.club.chartlib.util.Utils;
+
 
 /**
  * 线形图
