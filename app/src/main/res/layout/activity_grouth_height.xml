@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="iandroid.club.heightlinedemo.GrouthHeightActivity">
+
+    <iandroid.club.heightlinedemo.widget.ComboChart
+        android:id="@+id/mComboChart"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="#fff">
+
+        <iandroid.club.heightlinedemo.widget.LineChart
+            android:id="@+id/mBaseBarChart"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <iandroid.club.heightlinedemo.widget.YRender
+            android:id="@+id/yRender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff" />
+
+
+    </iandroid.club.heightlinedemo.widget.ComboChart>
+
+
+</RelativeLayout>

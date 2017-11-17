@@ -1,0 +1,863 @@
+[
+  {
+    "age" : "0",
+    "_id" : "1",
+    "weight" : "2.26",
+    "height" : "44.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "0",
+    "_id" : "2",
+    "weight" : "3.21",
+    "height" : "49.7",
+    "heightType" : "50"
+  },
+  {
+    "age" : "0",
+    "_id" : "3",
+    "weight" : "4.65",
+    "height" : "55.0",
+    "heightType" : "97"
+  },
+  {
+    "age" : "2",
+    "_id" : "4",
+    "weight" : "3.72",
+    "height" : "51.1",
+    "heightType" : "3"
+  },
+  {
+    "age" : "4",
+    "_id" : "5",
+    "weight" : "4.93",
+    "height" : "56.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "6",
+    "_id" : "6",
+    "weight" : "5.64",
+    "height" : "60.1",
+    "heightType" : "3"
+  },
+  {
+    "age" : "9",
+    "_id" : "7",
+    "weight" : "6.34",
+    "height" : "63.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "12",
+    "_id" : "8",
+    "weight" : "6.87",
+    "height" : "67.2",
+    "heightType" : "3"
+  },
+  {
+    "age" : "15",
+    "_id" : "9",
+    "weight" : "7.34",
+    "height" : "70.2",
+    "heightType" : "3"
+  },
+  {
+    "age" : "18",
+    "_id" : "10",
+    "weight" : "7.79",
+    "height" : "72.8",
+    "heightType" : "3"
+  },
+  {
+    "age" : "21",
+    "_id" : "11",
+    "weight" : "8.26",
+    "height" : "75.1",
+    "heightType" : "3"
+  },
+  {
+    "age" : "24",
+    "_id" : "12",
+    "weight" : "8.70",
+    "height" : "77.3",
+    "heightType" : "3"
+  },
+  {
+    "age" : "30",
+    "_id" : "13",
+    "weight" : "9.48",
+    "height" : "81.4",
+    "heightType" : "3"
+  },
+  {
+    "age" : "36",
+    "_id" : "14",
+    "weight" : "10.23",
+    "height" : "84.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "42",
+    "_id" : "15",
+    "weight" : "10.95",
+    "height" : "88.4",
+    "heightType" : "3"
+  },
+  {
+    "age" : "48",
+    "_id" : "16",
+    "weight" : "11.62",
+    "height" : "91.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "54",
+    "_id" : "17",
+    "weight" : "12.30",
+    "height" : "94.8",
+    "heightType" : "3"
+  },
+  {
+    "age" : "60",
+    "_id" : "18",
+    "weight" : "12.93",
+    "height" : "97.8",
+    "heightType" : "3"
+  },
+  {
+    "age" : "66",
+    "_id" : "19",
+    "weight" : "13.54",
+    "height" : "100.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "72",
+    "_id" : "20",
+    "weight" : "14.11",
+    "height" : "103.2",
+    "heightType" : "3"
+  },
+  {
+    "age" : "78",
+    "_id" : "21",
+    "weight" : "14.66",
+    "height" : "105.5",
+    "heightType" : "3"
+  },
+  {
+    "age" : "84",
+    "_id" : "22",
+    "weight" : "15.27",
+    "height" : "108.0",
+    "heightType" : "3"
+  },
+  {
+    "age" : "90",
+    "_id" : "23",
+    "weight" : "15.09",
+    "height" : "110.4",
+    "heightType" : "3"
+  },
+  {
+    "age" : "96",
+    "_id" : "24",
+    "weight" : "16.51",
+    "height" : "112.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "114",
+    "_id" : "25",
+    "weight" : "18.49",
+    "height" : "119.1",
+    "heightType" : "3"
+  },
+  {
+    "age" : "120",
+    "_id" : "26",
+    "weight" : "19.29",
+    "height" : "121.5",
+    "heightType" : "3"
+  },
+  {
+    "age" : "126",
+    "_id" : "27",
+    "weight" : "20.23",
+    "height" : "123.9",
+    "heightType" : "3"
+  },
+  {
+    "age" : "132",
+    "_id" : "28",
+    "weight" : "21.46",
+    "height" : "126.9",
+    "heightType" : "3"
+  },
+  {
+    "age" : "138",
+    "_id" : "29",
+    "weight" : "22.89",
+    "height" : "129.9",
+    "heightType" : "3"
+  },
+  {
+    "age" : "144",
+    "_id" : "30",
+    "weight" : "24.58",
+    "height" : "133.0",
+    "heightType" : "3"
+  },
+  {
+    "age" : "150",
+    "_id" : "31",
+    "weight" : "26.32",
+    "height" : "135.9",
+    "heightType" : "3"
+  },
+  {
+    "age" : "156",
+    "_id" : "32",
+    "weight" : "28.11",
+    "height" : "138.2",
+    "heightType" : "3"
+  },
+  {
+    "age" : "162",
+    "_id" : "33",
+    "weight" : "29.81",
+    "height" : "140.1",
+    "heightType" : "3"
+  },
+  {
+    "age" : "168",
+    "_id" : "34",
+    "weight" : "31.38",
+    "height" : "141.5",
+    "heightType" : "3"
+  },
+  {
+    "age" : "174",
+    "_id" : "35",
+    "weight" : "32.73",
+    "height" : "142.6",
+    "heightType" : "3"
+  },
+  {
+    "age" : "186",
+    "_id" : "36",
+    "weight" : "33.78",
+    "height" : "143.3",
+    "heightType" : "3"
+  },
+  {
+    "age" : "192",
+    "_id" : "37",
+    "weight" : "34.59",
+    "height" : "143.7",
+    "heightType" : "3"
+  },
+  {
+    "age" : "198",
+    "_id" : "38",
+    "weight" : "35.06",
+    "height" : "143.8",
+    "heightType" : "3"
+  },
+  {
+    "age" : "204",
+    "_id" : "39",
+    "weight" : "35.57",
+    "height" : "144.0",
+    "heightType" : "3"
+  },
+  {
+    "age" : "216",
+    "_id" : "40",
+    "weight" : "35.85",
+    "height" : "144.4",
+    "heightType" : "3"
+  },
+  {
+    "age" : "2",
+    "_id" : "41",
+    "weight" : "5.21",
+    "height" : "57.4",
+    "heightType" : "50"
+  },
+  {
+    "age" : "4",
+    "_id" : "42",
+    "weight" : "6.83",
+    "height" : "63.1",
+    "heightType" : "50"
+  },
+  {
+    "age" : "6",
+    "_id" : "43",
+    "weight" : "7.77",
+    "height" : "66.8",
+    "heightType" : "50"
+  },
+  {
+    "age" : "9",
+    "_id" : "44",
+    "weight" : "8.69",
+    "height" : "71.0",
+    "heightType" : "50"
+  },
+  {
+    "age" : "12",
+    "_id" : "45",
+    "weight" : "9.40",
+    "height" : "75.0",
+    "heightType" : "50"
+  },
+  {
+    "age" : "15",
+    "_id" : "46",
+    "weight" : "10.02",
+    "height" : "78.5",
+    "heightType" : "50"
+  },
+  {
+    "age" : "18",
+    "_id" : "47",
+    "weight" : "10.65",
+    "height" : "81.5",
+    "heightType" : "50"
+  },
+  {
+    "age" : "21",
+    "_id" : "48",
+    "weight" : "11.30",
+    "height" : "84.4",
+    "heightType" : "50"
+  },
+  {
+    "age" : "24",
+    "_id" : "49",
+    "weight" : "11.92",
+    "height" : "87.2",
+    "heightType" : "50"
+  },
+  {
+    "age" : "30",
+    "_id" : "50",
+    "weight" : "13.05",
+    "height" : "92.1",
+    "heightType" : "50"
+  },
+  {
+    "age" : "36",
+    "_id" : "51",
+    "weight" : "14.13",
+    "height" : "95.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "42",
+    "_id" : "52",
+    "weight" : "15.16",
+    "height" : "99.4",
+    "heightType" : "50"
+  },
+  {
+    "age" : "48",
+    "_id" : "53",
+    "weight" : "16.17",
+    "height" : "103.1",
+    "heightType" : "50"
+  },
+  {
+    "age" : "54",
+    "_id" : "54",
+    "weight" : "17.22",
+    "height" : "106.7",
+    "heightType" : "50"
+  },
+  {
+    "age" : "60",
+    "_id" : "55",
+    "weight" : "18.26",
+    "height" : "110.2",
+    "heightType" : "50"
+  },
+  {
+    "age" : "66",
+    "_id" : "56",
+    "weight" : "19.33",
+    "height" : "113.5",
+    "heightType" : "50"
+  },
+  {
+    "age" : "72",
+    "_id" : "57",
+    "weight" : "20.37",
+    "height" : "116.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "78",
+    "_id" : "58",
+    "weight" : "21.44",
+    "height" : "119.4",
+    "heightType" : "50"
+  },
+  {
+    "age" : "84",
+    "_id" : "59",
+    "weight" : "22.64",
+    "height" : "122.5",
+    "heightType" : "50"
+  },
+  {
+    "age" : "90",
+    "_id" : "60",
+    "weight" : "23.93",
+    "height" : "125.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "96",
+    "_id" : "61",
+    "weight" : "25.25",
+    "height" : "128.5",
+    "heightType" : "50"
+  },
+  {
+    "age" : "102",
+    "_id" : "62",
+    "weight" : "26.67",
+    "height" : "131.3",
+    "heightType" : "50"
+  },
+  {
+    "age" : "108",
+    "_id" : "63",
+    "weight" : "28.19",
+    "height" : "134.1",
+    "heightType" : "50"
+  },
+  {
+    "age" : "114",
+    "_id" : "64",
+    "weight" : "29.67",
+    "height" : "137.0",
+    "heightType" : "50"
+  },
+  {
+    "age" : "120",
+    "_id" : "65",
+    "weight" : "31.76",
+    "height" : "140.1",
+    "heightType" : "50"
+  },
+  {
+    "age" : "126",
+    "_id" : "66",
+    "weight" : "33.60",
+    "height" : "143.3",
+    "heightType" : "50"
+  },
+  {
+    "age" : "132",
+    "_id" : "67",
+    "weight" : "36.10",
+    "height" : "146.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "138",
+    "_id" : "68",
+    "weight" : "38.40",
+    "height" : "149.7",
+    "heightType" : "50"
+  },
+  {
+    "age" : "144",
+    "_id" : "69",
+    "weight" : "40.77",
+    "height" : "152.4",
+    "heightType" : "50"
+  },
+  {
+    "age" : "150",
+    "_id" : "70",
+    "weight" : "42.69",
+    "height" : "154.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "156",
+    "_id" : "71",
+    "weight" : "44.79",
+    "height" : "156.3",
+    "heightType" : "50"
+  },
+  {
+    "age" : "162",
+    "_id" : "72",
+    "weight" : "46.42",
+    "height" : "157.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "168",
+    "_id" : "73",
+    "weight" : "47.63",
+    "height" : "158.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "174",
+    "_id" : "74",
+    "weight" : "48.97",
+    "height" : "159.4",
+    "heightType" : "50"
+  },
+  {
+    "age" : "180",
+    "_id" : "75",
+    "weight" : "49.62",
+    "height" : "159.8",
+    "heightType" : "50"
+  },
+  {
+    "age" : "186",
+    "_id" : "76",
+    "weight" : "50.45",
+    "height" : "160.1",
+    "heightType" : "50"
+  },
+  {
+    "age" : "192",
+    "_id" : "77",
+    "weight" : "50.61",
+    "height" : "160.1",
+    "heightType" : "50"
+  },
+  {
+    "age" : "198",
+    "_id" : "78",
+    "weight" : "51.07",
+    "height" : "160.2",
+    "heightType" : "50"
+  },
+  {
+    "age" : "204",
+    "_id" : "79",
+    "weight" : "51.20",
+    "height" : "160.3",
+    "heightType" : "50"
+  },
+  {
+    "age" : "216",
+    "_id" : "80",
+    "weight" : "51.41",
+    "height" : "160.6",
+    "heightType" : "50"
+  },
+  {
+    "age" : "180",
+    "_id" : "81",
+    "weight" : "33.78",
+    "height" : "143.3",
+    "heightType" : "3"
+  },
+  {
+    "age" : "102",
+    "_id" : "91",
+    "weight" : "17.14",
+    "height" : "115.0",
+    "heightType" : "3"
+  },
+  {
+    "age" : "108",
+    "_id" : "92",
+    "weight" : "17.79",
+    "height" : "117.0",
+    "heightType" : "3"
+  },
+  {
+    "age" : "2",
+    "_id" : "93",
+    "weight" : "7.46",
+    "height" : "64.1",
+    "heightType" : "97"
+  },
+  {
+    "age" : "4",
+    "_id" : "94",
+    "weight" : "9.66",
+    "height" : "70.0",
+    "heightType" : "97"
+  },
+  {
+    "age" : "6",
+    "_id" : "95",
+    "weight" : "10.93",
+    "height" : "74.0",
+    "heightType" : "97"
+  },
+  {
+    "age" : "9",
+    "_id" : "96",
+    "weight" : "12.18",
+    "height" : "78.9",
+    "heightType" : "97"
+  },
+  {
+    "age" : "12",
+    "_id" : "97",
+    "weight" : "13.15",
+    "height" : "83.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "15",
+    "_id" : "98",
+    "weight" : "14.02",
+    "height" : "87.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "18",
+    "_id" : "99",
+    "weight" : "14.90",
+    "height" : "91.0",
+    "heightType" : "97"
+  },
+  {
+    "age" : "21",
+    "_id" : "100",
+    "weight" : "15.85",
+    "height" : "94.5",
+    "heightType" : "97"
+  },
+  {
+    "age" : "24",
+    "_id" : "101",
+    "weight" : "16.77",
+    "height" : "98.0",
+    "heightType" : "97"
+  },
+  {
+    "age" : "30",
+    "_id" : "102",
+    "weight" : "18.47",
+    "height" : "103.8",
+    "heightType" : "97"
+  },
+  {
+    "age" : "36",
+    "_id" : "103",
+    "weight" : "20.10",
+    "height" : "107.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "42",
+    "_id" : "104",
+    "weight" : "21.69",
+    "height" : "111.3",
+    "heightType" : "97"
+  },
+  {
+    "age" : "48",
+    "_id" : "105",
+    "weight" : "23.30",
+    "height" : "115.3",
+    "heightType" : "97"
+  },
+  {
+    "age" : "54",
+    "_id" : "106",
+    "weight" : "25.04",
+    "height" : "119.5",
+    "heightType" : "97"
+  },
+  {
+    "age" : "60",
+    "_id" : "107",
+    "weight" : "26.87",
+    "height" : "123.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "66",
+    "_id" : "108",
+    "weight" : "28.89",
+    "height" : "127.2",
+    "heightType" : "97"
+  },
+  {
+    "age" : "72",
+    "_id" : "109",
+    "weight" : "30.94",
+    "height" : "130.8",
+    "heightType" : "97"
+  },
+  {
+    "age" : "78",
+    "_id" : "110",
+    "weight" : "33.14",
+    "height" : "134.2",
+    "heightType" : "97"
+  },
+  {
+    "age" : "84",
+    "_id" : "111",
+    "weight" : "35.75",
+    "height" : "137.9",
+    "heightType" : "97"
+  },
+  {
+    "age" : "90",
+    "_id" : "112",
+    "weight" : "36.65",
+    "height" : "141.5",
+    "heightType" : "97"
+  },
+  {
+    "age" : "96",
+    "_id" : "113",
+    "weight" : "41.74",
+    "height" : "144.9",
+    "heightType" : "97"
+  },
+  {
+    "age" : "102",
+    "_id" : "114",
+    "weight" : "45.24",
+    "height" : "148.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "108",
+    "_id" : "115",
+    "weight" : "49.19",
+    "height" : "151.8",
+    "heightType" : "97"
+  },
+  {
+    "age" : "114",
+    "_id" : "116",
+    "weight" : "53.77",
+    "height" : "155.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "120",
+    "_id" : "117",
+    "weight" : "58.92",
+    "height" : "159.2",
+    "heightType" : "97"
+  },
+  {
+    "age" : "126",
+    "_id" : "118",
+    "weight" : "64.24",
+    "height" : "163.0",
+    "heightType" : "97"
+  },
+  {
+    "age" : "132",
+    "_id" : "119",
+    "weight" : "69.27",
+    "height" : "166.7",
+    "heightType" : "97"
+  },
+  {
+    "age" : "138",
+    "_id" : "120",
+    "weight" : "72.80",
+    "height" : "169.6",
+    "heightType" : "97"
+  },
+  {
+    "age" : "144",
+    "_id" : "121",
+    "weight" : "75.32",
+    "height" : "171.8",
+    "heightType" : "97"
+  },
+  {
+    "age" : "150",
+    "_id" : "122",
+    "weight" : "77.05",
+    "height" : "173.3",
+    "heightType" : "97"
+  },
+  {
+    "age" : "156",
+    "_id" : "123",
+    "weight" : "78.17",
+    "height" : "174.3",
+    "heightType" : "97"
+  },
+  {
+    "age" : "162",
+    "_id" : "124",
+    "weight" : "78.87",
+    "height" : "175.0",
+    "heightType" : "97"
+  },
+  {
+    "age" : "168",
+    "_id" : "125",
+    "weight" : "79.27",
+    "height" : "175.5",
+    "heightType" : "97"
+  },
+  {
+    "age" : "174",
+    "_id" : "126",
+    "weight" : "79.48",
+    "height" : "175.9",
+    "heightType" : "97"
+  },
+  {
+    "age" : "180",
+    "_id" : "127",
+    "weight" : "79.60",
+    "height" : "176.2",
+    "heightType" : "97"
+  },
+  {
+    "age" : "186",
+    "_id" : "128",
+    "weight" : "79.68",
+    "height" : "176.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "192",
+    "_id" : "129",
+    "weight" : "79.77",
+    "height" : "176.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "198",
+    "_id" : "130",
+    "weight" : "79.86",
+    "height" : "176.4",
+    "heightType" : "97"
+  },
+  {
+    "age" : "204",
+    "_id" : "131",
+    "weight" : "79.95",
+    "height" : "176.5",
+    "heightType" : "97"
+  },
+  {
+    "age" : "216",
+    "_id" : "132",
+    "weight" : "79.90",
+    "height" : "176.6",
+    "heightType" : "97"
+  }
+]
