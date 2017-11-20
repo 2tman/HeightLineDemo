@@ -15,13 +15,14 @@
         <iandroid.club.chartlib.widget.LineChart
             android:id="@+id/mBaseBarChart"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <iandroid.club.chartlib.widget.YRender
             android:id="@+id/yRender"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fff" />
+            android:background="#fff"
+            android:layout_marginTop="30dp"/>
 
 
     </iandroid.club.chartlib.widget.ComboChart>

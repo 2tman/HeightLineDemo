@@ -43,9 +43,8 @@ public class BaseChart extends View {
     private int xLabelHeight = 50;
     //x轴文字
     private List<String> xLabels;
-
-    //左侧距离
-    private int xLeftLineOffset = 50;
+    //x轴数据
+    private List<Integer> xLabelValues;
 
     public BaseChart(Context context) {
         super(context);
@@ -63,7 +62,7 @@ public class BaseChart extends View {
     }
 
     private void init(Context context) {
-        if(xLabels == null){
+        if (xLabels == null) {
             //演示数据
             xLabels = new ArrayList<>();
             xLabels.add("label1");
@@ -97,10 +96,17 @@ public class BaseChart extends View {
         this.xLabels = xLabels;
     }
 
+    public void setxLabelValues(List<Integer> xLabelValues) {
+        this.xLabelValues = xLabelValues;
+    }
+
     public List<String> getxLabels() {
         return xLabels;
     }
 
+    public List<Integer> getxLabelValues() {
+        return xLabelValues;
+    }
 
     public void setyRender(YRender yRender) {
         this.yRender = yRender;
@@ -133,8 +139,6 @@ public class BaseChart extends View {
 
         canvas.save();
 
-        //图表面板实际高度
-        int height = getFactHeight();
         //y轴间隔高度
         int hPerHeight = yRender.gethPerHeight();
         //y轴线
@@ -144,8 +148,8 @@ public class BaseChart extends View {
         //0坐标的高度
         int bottom = yRender.getZeroLineHeight();
         int lineWidth = getCanvasWidth();
-        // 画y轴线
-        drawYLines(canvas, hPerHeight, lineWidth);
+        // 绘制grid横向线条
+        drawToYLines(canvas, hPerHeight, lineWidth);
         // 绘制zero的线条
         drawZeroLine(canvas, bottom, lineWidth);
 
@@ -155,34 +159,14 @@ public class BaseChart extends View {
         if (xLabels != null && xLabels.size() > 0) {
             // 设置底部的文字
             int columCount = xLabels.size();
-            drawXLables(canvas, barStep, height, columCount);
-            //grid横向线条
-            drawXLine(canvas, barStep, bottom, columCount);
+            int xTextHeight = bottom+Utils.dp2px(10);
+            drawXLables(canvas, barStep, xTextHeight, columCount);
+            //绘制grid纵向线条
+            drawToXLine(canvas, barStep, bottom, columCount);
         }
         canvas.restore();
     }
 
-
-    /**
-     * 实际高度
-     *
-     * @return
-     */
-    private int getFactHeight() {
-        return getHeight() - Utils.dp2px(xLabelHeight);
-    }
-
-
-    /**
-     * 绘制Y轴线条
-     */
-    private void drawYLines(Canvas canvas, int hPerHeight, int width) {
-
-        for (int i = 0; i < yRender.getShowLableCount(); i++) {
-            canvas.drawLine(Utils.dp2px(xLeftLineOffset), i * hPerHeight + Utils.dp2px(yRender.getyLineOffset()),
-                    width, i * hPerHeight + Utils.dp2px(yRender.getyLineOffset()), hLinePaint);
-        }
-    }
 
     /**
      * 绘制x轴0坐标的线条
@@ -192,9 +176,9 @@ public class BaseChart extends View {
     private void drawZeroLine(Canvas canvas, int height, int width) {
         //判断是否已经有0坐标
         if (!yRender.getmValues().contains(0)) {
-            canvas.drawLine(Utils.dp2px(xLeftLineOffset),
-                    height + Utils.dp2px(yRender.getyLineOffset()), width,
-                    height + Utils.dp2px(yRender.getyLineOffset())
+            canvas.drawLine(yRender.getyWidthDefault(),
+                    height, width,
+                    height
                     , xLinePaint);
 
             //画zero的文字
@@ -211,27 +195,40 @@ public class BaseChart extends View {
         xLabelPaint.setAntiAlias(true);
         xLabelPaint.setStyle(Paint.Style.FILL);
         for (int i = 0; i < columCount; i++) {
-            int left = step * i+yRender.getyWidthDefault();
+            int left = step * i + yRender.getyWidthDefault();
             if (i == 0) {
                 int textWidth = ScreenUtils.calcTextWidth(xLabelPaint, xLabels.get(i));
-                left += textWidth/2;
+                left += textWidth / 2;
             }
             canvas.drawText(xLabels.get(i), left, height, xLabelPaint);
         }
     }
 
     /**
-     * 绘制横向GridLine
+     * 绘制纵向线条
      */
-    private void drawXLine(Canvas canvas, int step, int height, int columCount) {
+    private void drawToXLine(Canvas canvas, int step, int height, int columCount) {
         for (int i = 1; i < columCount; i++) {
-            int left = step * i+yRender.getyWidthDefault();
-            canvas.drawLine(left, 0,
-                    left, height+ Utils.dp2px(yRender.getyLineOffset()), hLinePaint);
+            int left = step * i + yRender.getyWidthDefault();
+            canvas.drawLine(left, yRender.getyTopOffSet()-Utils.dp2px(20),
+                    left, height-Utils.dp2px(5), hLinePaint);
 
         }
 
     }
+
+
+    /**
+     * 绘制grid横向线条
+     */
+    private void drawToYLines(Canvas canvas, int hPerHeight, int width) {
+
+        for (int i = 0; i < yRender.getShowLableCount(); i++) {
+            canvas.drawLine(yRender.getyWidthDefault(), i * hPerHeight + yRender.getyTopOffSet(),
+                    width, i * hPerHeight + yRender.getyTopOffSet(), hLinePaint);
+        }
+    }
+
 
     /**
      * 左侧的偏移量
@@ -239,7 +236,7 @@ public class BaseChart extends View {
      * @return
      */
     public int getxLeftOffset() {
-        return Utils.dp2px(xLeftLineOffset);
+        return yRender.getyWidthDefault();
     }
 
 
@@ -260,7 +257,7 @@ public class BaseChart extends View {
      */
     public int getTotalViewWidth() {
         return getCanvasWidth() //保证居中
-                - Utils.dp2px(xLeftLineOffset) * getScreenCount() * 2;
+                - yRender.getyWidthDefault() * getScreenCount() * 2;
     }
 
     /**
@@ -292,7 +289,7 @@ public class BaseChart extends View {
      */
     public int getViewWidth() {
         return getScreenWidth() //保证居中
-                - Utils.dp2px(xLeftLineOffset) * 2 - getxLeftOffset() * 2;
+                - yRender.getyWidthDefault() * 2 - getxLeftOffset() * 2;
 
     }
 
@@ -369,12 +366,12 @@ public class BaseChart extends View {
     }
 
     /**
-     * 根据xValue查找当前的x位置
+     * 根据xLabel查找当前的x位置
      *
      * @param xValue
      * @return
      */
-    public int findFinalPointXByXValue(String xValue) {
+    public int findFinalPointXByXLabel(String xValue) {
         int targetIndex = 0;
         if (xLabels != null && xLabels.size() > 0) {
             for (int i = 0; i < xLabels.size(); i++) {
@@ -390,6 +387,33 @@ public class BaseChart extends View {
     }
 
     /**
+     * 根据xValue查找当前的x位置
+     *
+     * @param xValue
+     * @return
+     */
+    public int findFinalPointXByXValue(int xValue) {
+        int targetIndex = 0;
+        int targetXValue = 0;
+        if (xLabelValues != null && xLabelValues.size() > 0) {
+            for (int i = 0; i < xLabelValues.size(); i++) {
+                if (xLabelValues.get(i) >= xValue) {
+                    targetXValue = xLabelValues.get(i);
+                    targetIndex = i;
+                    break;
+                }
+            }
+        }
+        //计算targetIndex的x轴位置
+        int targetBarX = getXWidthStep() * targetIndex + getxLeftOffset();
+        if (targetXValue == xValue) {
+            return targetBarX;
+        }
+        int resultX = Math.round((float) targetBarX / (float) targetXValue * (float) xValue);
+        return resultX;
+    }
+
+    /**
      * 根据yValue获得y坐标
      *
      * @param yValue
@@ -397,7 +421,7 @@ public class BaseChart extends View {
      */
     public float findFinalYByValue(float yValue) {
         int bottom = yRender.getZeroLineHeight();
-        float rh = bottom + Utils.dp2px(yRender.getyLineOffset()) - yValue * yRender.gethPerHeight() / yRender.getvPerValue();
+        float rh = bottom + -yValue * yRender.gethPerHeight() / yRender.getvPerValue();
         return rh;
     }
 

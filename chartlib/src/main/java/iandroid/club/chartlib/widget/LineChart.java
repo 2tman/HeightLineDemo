@@ -22,7 +22,7 @@ import java.util.Map;
 import iandroid.club.chartlib.entity.ChartPoint;
 import iandroid.club.chartlib.entity.DataSet;
 import iandroid.club.chartlib.entity.LineEntity;
-import iandroid.club.chartlib.util.LogUtils;
+import iandroid.club.chartlib.entity.PointEntity;
 import iandroid.club.chartlib.util.ScreenUtils;
 import iandroid.club.chartlib.util.Utils;
 
@@ -59,7 +59,7 @@ public class LineChart extends BaseChart {
 
     //当前右侧文字x值
     private int currentRightTextX;
-    private int pointWidth = 0;
+    private int pointWidth = 3;
 
     public LineChart(Context context) {
         super(context);
@@ -95,6 +95,7 @@ public class LineChart extends BaseChart {
 
         mPointPaint = new Paint();
         mPointPaint.setAntiAlias(true);
+        mPointPaint.setColor(Color.GREEN);
 
         mLineAreaPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLineAreaPaint.setStyle(Paint.Style.FILL);
@@ -103,6 +104,7 @@ public class LineChart extends BaseChart {
         animationSet = new AnimationSet(true);
         pathLine = new Path();
         pathShader = new Path();
+
 
         currentRightTextX = getScreenWidth();
 
@@ -119,6 +121,8 @@ public class LineChart extends BaseChart {
         drawLines(canvas);
         //绘制线条上部分的文字
         drawTextAboveLine(canvas, currentRightTextX);
+        //绘制圆点
+        drawCircles(canvas);
     }
 
     /**
@@ -159,7 +163,6 @@ public class LineChart extends BaseChart {
 //                float[] animItem = animProgress.get(k);
                 int mColor = dataSets.get(k).getmColor();
 
-                mPointPaint.setColor(mColor);
                 mLinePaint.setColor(mColor);
                 mLinePaintDash.setColor(mColor);
 
@@ -233,7 +236,7 @@ public class LineChart extends BaseChart {
         for (int i = 0; i < mLineValues.size(); i++) {
             LineEntity lineEntityStart = mLineValues.get(i);
 
-            float entityX = findFinalPointXByXValue(lineEntityStart.getmLabel()) - Utils.dp2px(pointWidth);
+            float entityX = findFinalPointXByXLabel(lineEntityStart.getmLabel());
             float entityY =
 //                            findFinalYByValue(animItem[i]);
                     findFinalYByValue(lineEntityStart.getmValue());
@@ -274,7 +277,6 @@ public class LineChart extends BaseChart {
      * @param left   false 右侧边距增大 ， true :右侧边距变小
      */
     public void notifyTextPointChange(int offset, boolean left) {
-        LogUtils.log(left ? "右侧边距变小:" + offset : "右侧边距增大" + offset);
         currentRightTextX = getScreenWidth()+Math.abs(offset);
         invalidate();
     }
@@ -293,6 +295,36 @@ public class LineChart extends BaseChart {
         return mLineAreaPaint;
     }
 
+    private List<PointEntity> points;
+    /**
+     * 落点数据
+     * @param points
+     */
+    public void setPoints(List<PointEntity> points){
+        this.points = points;
+        invalidate();
+    }
+
+    /**
+     * 绘制圆点
+     * @param canvas
+     */
+    private void drawCircles(Canvas canvas){
+        if(points!=null && points.size()>0){
+            for (PointEntity point:points){
+                //x轴文字
+                int xLabelValue = point.getxLableValue();
+                //y轴数据
+                float mValue = point.getmValue();
+
+                //x坐标
+                float entityX = findFinalPointXByXValue(xLabelValue);
+                //y坐标
+                float entityY = findFinalYByValue(mValue);
+                drawCircle(canvas, entityX, entityY);
+            }
+        }
+    }
 
     /**
      * 画圆点
@@ -301,7 +333,7 @@ public class LineChart extends BaseChart {
      * @param circleX
      * @param circleY
      */
-    private void drawCircles(Canvas canvas, float circleX, float circleY) {
+    private void drawCircle(Canvas canvas, float circleX, float circleY) {
         canvas.drawCircle(circleX, circleY, Utils.dp2px(pointWidth), mPointPaint);
     }
 

@@ -1,6 +1,9 @@
 package iandroid.club.chartlib.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
@@ -8,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import iandroid.club.chartlib.util.Utils;
 
 
 /**
@@ -15,12 +19,50 @@ import android.widget.FrameLayout;
  */
 public class ComboChart extends FrameLayout {
 
+    /**
+     * 拖拽效果
+     */
     private ViewDragHelper mViewDragHelper;
+
+    /**
+     * y轴
+     */
     private YRender yRender;
+
+    /**
+     * 折线图
+     */
     private LineChart lineChart;
-    private int paddingLeft;
-    private int noDataTextWidth;
+
+    /**
+     * 右侧最大宽度
+     */
     private int maxRightWidth;
+
+    /**
+     * y轴顶部默认的文字
+     */
+    private String showText = "身高(cm)";
+
+    /**
+     * y轴距离左侧的距离
+     */
+    private int yLeftOffset = 40;
+
+    /**
+     * y轴距离头部的距离
+     */
+    private int yTopOffset = 20;
+
+    /**
+     * 绘制Y轴文本的画笔
+     */
+    private Paint textPaint;
+
+    /**
+     * 图标区域左侧y轴起点
+     */
+    private float leftStartY;
 
     public ComboChart(Context context) {
         super(context);
@@ -38,6 +80,11 @@ public class ComboChart extends FrameLayout {
         initView();
     }
 
+    public void setShowText(String showText) {
+        this.showText = showText;
+    }
+
+
     public LineChart getBaseBarChart() {
         return lineChart;
     }
@@ -51,14 +98,54 @@ public class ComboChart extends FrameLayout {
         lineChart.animShow(1);
     }
 
+    public int getyLeftOffset() {
+        return Utils.dp2px(yLeftOffset);
+    }
+
+    public int getyTopOffset() {
+        return Utils.dp2px(yTopOffset);
+    }
+
+    /**
+     * 初始化
+     */
+    private void initView() {
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(Utils.sp2px(12));
+
+        mViewDragHelper = ViewDragHelper.create(this, callback);
+        //拖动的方向
+        mViewDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT | ViewDragHelper.EDGE_RIGHT);
+
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        //顶部文字宽度
+        float showTextWidth = Utils.calcTextWidth(textPaint, showText);
+        //顶部文字高度
+        float showTextHeight = Utils.calcTextHeight(textPaint, showText);
+        //左侧y轴起点坐标值
+        leftStartY = getyTopOffset() + showTextHeight + Utils.dp2px(5);
+
+        //这种上侧起点
+        yRender.setyTopOffSet(leftStartY);
+
+        super.onDraw(canvas);
+
+        //绘制y轴最上方的文字显示
+        canvas.drawText(showText, getyLeftOffset() - showTextWidth / 2, getyTopOffset(), textPaint);
+    }
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         yRender = (YRender) getChildAt(1);
-        paddingLeft = yRender.getyWidthDefault();
         lineChart = (LineChart) getChildAt(0);
         lineChart.setyRender(yRender);
-        noDataTextWidth = 0;
+        //设置左侧起点
+        yRender.setyWidthDefault(getyLeftOffset());
     }
 
 
@@ -101,12 +188,6 @@ public class ComboChart extends FrameLayout {
         return true;
     }
 
-    private void initView() {
-
-        mViewDragHelper = ViewDragHelper.create(this, callback);
-        //拖动的方向
-        mViewDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT | ViewDragHelper.EDGE_RIGHT);
-    }
 
     private int currentLeft = 0;
 
@@ -152,6 +233,7 @@ public class ComboChart extends FrameLayout {
                 }
 
                 private int currentTop = 0;
+
                 // 处理垂直滑动
                 @Override
                 public int clampViewPositionVertical(View child, int top, int dy) {
@@ -170,18 +252,18 @@ public class ComboChart extends FrameLayout {
                 public int clampViewPositionHorizontal(View child, int left, int dx) {
                     if (left > 0) {
                         isLeftLimit = true;
-                        return noDataTextWidth;
+                        return 0;
                     } else if (left < -maxRightWidth) {
                         isRightLimit = true;
                         return -maxRightWidth;
                     }
                     isRightLimit = false;
                     isLeftLimit = false;
-                    if(currentLeft!=0 && currentLeft!=-maxRightWidth) {//不是在边界
+                    if (currentLeft != 0 && currentLeft != -maxRightWidth) {//不是在边界
                         if (currentLeft > left) {//left越来越小，则是往右滑动
                             lineChart.notifyTextPointChange(left, false);
 
-                        }else if(currentLeft < left){//left越来越大，则是往左滑动
+                        } else if (currentLeft < left) {//left越来越大，则是往左滑动
                             lineChart.notifyTextPointChange(left, true);
                         }
                     }

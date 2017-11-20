@@ -8,6 +8,7 @@ public class DataEntity {
     private float mValue;
     private String mLabel;
     private boolean drawDash;
+    private int mColor;
 
     public float getmValue() {
         return mValue;
@@ -31,6 +32,14 @@ public class DataEntity {
 
     public void setDrawDash(boolean drawDash) {
         this.drawDash = drawDash;
+    }
+
+    public int getmColor() {
+        return mColor;
+    }
+
+    public void setmColor(int mColor) {
+        this.mColor = mColor;
     }
 
     public DataEntity(float mValue, String mLabel) {

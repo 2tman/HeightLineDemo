@@ -24,12 +24,20 @@ public class YRender extends View {
 
     private Paint yLabelPaint;// 绘制Y轴文本的画笔
     private Paint yLinePaint;//y轴线
+
+    /**
+     * y轴左侧距离
+     */
     private int yWidthDefault = 50;
+    /**
+     * y轴上侧距离
+     */
+    private float yTopOffSet;
+
     private int maxValue;
     private int minValue;
     private int hPerHeight;
     private int vPerValue;
-    private int yLineOffset = 20;
     private int height;
     List<Integer> mValues = new ArrayList<>();
 
@@ -60,20 +68,25 @@ public class YRender extends View {
 
     }
 
-    public int getyLineOffset() {
-        return yLineOffset;
-    }
 
     public List<Integer> getmValues() {
         return mValues;
     }
 
     public int getyWidthDefault() {
-        return Utils.dp2px(yWidthDefault);
+        return yWidthDefault;
     }
 
     public void setyWidthDefault(int yWidthDefault) {
         this.yWidthDefault = yWidthDefault;
+    }
+
+    public void setyTopOffSet(float yTopOffSet) {
+        this.yTopOffSet = yTopOffSet;
+    }
+
+    public float getyTopOffSet() {
+        return yTopOffSet + Utils.dp2px(30);
     }
 
     public int getShowLableCount() {
@@ -99,7 +112,7 @@ public class YRender extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int measuredHeight = MeasureSpec.getSize(heightMeasureSpec);
-        setMeasuredDimension(Utils.dp2px(yWidthDefault), measuredHeight);
+        setMeasuredDimension(yWidthDefault, measuredHeight);
     }
 
     @SuppressLint("DrawAllocation")
@@ -109,16 +122,14 @@ public class YRender extends View {
 
         height = getHeight() - Utils.dp2px(50);//减去x坐标文字高度
 
-        hPerHeight = height / showLableCount-1;// 分成四部分
+        hPerHeight = height / showLableCount - 1;// 分成四部分
 
-        /**
-         * 绘制 Y 轴坐标
-         */
+        //y轴线
+        drawYLine(canvas);
 
         // 设置左部的数字
         drawYLables(canvas, hPerHeight);
-        //y轴线
-        drawYLine(canvas);
+
 
     }
 
@@ -141,7 +152,7 @@ public class YRender extends View {
     public void generateValues() {
         mValues.clear();
         if (maxValue > minValue) {
-            vPerValue = (maxValue - minValue) / (showLableCount-1);
+            vPerValue = (maxValue - minValue) / (showLableCount - 1);
             for (int i = 0; i < showLableCount; i++) {
                 int tempValue = minValue + vPerValue * i;
                 mValues.add(tempValue);
@@ -171,7 +182,8 @@ public class YRender extends View {
             String yLabelText = mValues.get(i) + "";
             int textHeight = Utils.calcTextHeight(yLabelPaint, yLabelText);
             int textWidth = Utils.calcTextWidth(yLabelPaint, yLabelText);
-            canvas.drawText(yLabelText, getWidth() / 2, textHeight / 2 + i * hPerHeight+Utils.dp2px(yLineOffset),
+            canvas.drawText(yLabelText, getyWidthDefault() - textWidth,
+                    textHeight / 2 + i * hPerHeight + yTopOffSet ,
                     yLabelPaint);
         }
     }
@@ -179,10 +191,12 @@ public class YRender extends View {
 
     /**
      * y轴线
+     *
      * @param canvas
      */
-    private void drawYLine(Canvas canvas){
-        canvas.drawLine(getyWidthDefault(),0, getyWidthDefault(),getZeroLineHeight()+ Utils.dp2px(getyLineOffset()), yLinePaint);
+    private void drawYLine(Canvas canvas) {
+        canvas.drawLine(getyWidthDefault(), yTopOffSet-Utils.dp2px(20),
+                getyWidthDefault(), getZeroLineHeight()-Utils.dp2px(5)-Utils.dp2px(30), yLinePaint);
     }
 
 
@@ -192,7 +206,7 @@ public class YRender extends View {
     public int getZeroLineHeight() {
         int perHeight = gethPerHeight();
         float count = ((float) getMaxValue() - 0) / (float) getvPerValue();
-        int zeroHeight = Math.round(count * (float) perHeight);
+        int zeroHeight = Math.round(count * (float) perHeight  + getyTopOffSet());
         return zeroHeight;
     }
 
