@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_weight).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, GrouthWeightActivity.class));
+                startActivity(new Intent(context, TestActivity.class));
             }
         });
     }

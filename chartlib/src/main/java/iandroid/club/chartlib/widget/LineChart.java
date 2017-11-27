@@ -42,7 +42,7 @@ public class LineChart extends BaseChart {
     private Paint mLinePaintDash;
     //绘制圆点
     private Paint mPointPaint;
-    //线条直接区域的背景
+    //线条之间区域的背景
     private Paint mLineAreaPaint;
     //绘制线条的path
     private Path pathLine;
@@ -52,8 +52,6 @@ public class LineChart extends BaseChart {
     private List<DataSet> dataSets;
     //线条右侧的文字
     private List<String> rightLabels;
-    //线形动画
-    private AnimationSet animationSet;
     //线条的x y值
     private Map<String, List<ChartPoint>> pointsMap = new HashMap<>();
 
@@ -77,6 +75,8 @@ public class LineChart extends BaseChart {
     }
 
     private void initView() {
+        drawGridLine = true;
+
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setColor(Color.BLACK);
         mTextPaint.setTextSize(Utils.sp2px(9));
@@ -101,7 +101,6 @@ public class LineChart extends BaseChart {
         mLineAreaPaint.setStyle(Paint.Style.FILL);
         mLineAreaPaint.setAlpha(65);
 
-        animationSet = new AnimationSet(true);
         pathLine = new Path();
         pathShader = new Path();
 
@@ -117,6 +116,7 @@ public class LineChart extends BaseChart {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         //绘制线条
         drawLines(canvas);
         //绘制线条上部分的文字
@@ -160,7 +160,6 @@ public class LineChart extends BaseChart {
 
                 List<LineEntity> mLineValues = dataSets.get(k).getDataSet();
 
-//                float[] animItem = animProgress.get(k);
                 int mColor = dataSets.get(k).getmColor();
 
                 mLinePaint.setColor(mColor);
@@ -237,9 +236,7 @@ public class LineChart extends BaseChart {
             LineEntity lineEntityStart = mLineValues.get(i);
 
             float entityX = findFinalPointXByXLabel(lineEntityStart.getmLabel());
-            float entityY =
-//                            findFinalYByValue(animItem[i]);
-                    findFinalYByValue(lineEntityStart.getmValue());
+            float entityY = findFinalYByValue(lineEntityStart.getmValue());
             ChartPoint chartPoint = new ChartPoint(entityX, entityY);
             list.add(chartPoint);
         }
@@ -344,62 +341,17 @@ public class LineChart extends BaseChart {
      */
     public void setDataSets(List<DataSet> dataSets) {
         this.dataSets = dataSets;
-        animProgress = new LinkedList<>();
-        int duration = 1000;
-        for (int i = 0; i < dataSets.size(); i++) {
-            float[] aniItems = new float[dataSets.get(i).getDataSet().size()];
-            animProgress.add(aniItems);
-
-            HistogramAnimation lineAnimation = new HistogramAnimation();
-            lineAnimation.setDuration(duration);
-            animationSet.addAnimation(lineAnimation);
-
-            duration += 200;
-        }
     }
 
 
-    private LinkedList<float[]> animProgress;
 
-    public void animShow(int flag) {
-        this.flag = flag;
-        animationSet.setDuration(1000);
-        startAnimation(animationSet);
-
-    }
 
     /**
-     * 集成animation的一个动画类
-     *
-     * @author
+     * 进行移动
+     * @param xleft
      */
-    private class HistogramAnimation extends Animation {
-        @Override
-        protected void applyTransformation(float interpolatedTime,
-                                           Transformation t) {
-            super.applyTransformation(interpolatedTime, t);
-            if (interpolatedTime < 1.0f && flag == 2) {
-                for (int i = 0; i < dataSets.size(); i++) {
-                    List<LineEntity> mLineValues = dataSets.get(i).getDataSet();
-                    float[] aniItem = animProgress.get(i);
-                    for (int j = 0; j < aniItem.length; j++) {
-                        aniItem[j] = mLineValues.get(j).getmValue() * interpolatedTime;
-                    }
-                    animProgress.set(i, aniItem);
-                }
-
-            } else {
-                for (int i = 0; i < dataSets.size(); i++) {
-                    List<LineEntity> mLineValues = dataSets.get(i).getDataSet();
-                    float[] aniItem = animProgress.get(i);
-                    for (int j = 0; j < aniItem.length; j++) {
-                        aniItem[j] = mLineValues.get(j).getmValue();
-                    }
-                    animProgress.set(i, aniItem);
-                }
-            }
-            invalidate();
-        }
+    public void scrollInvalidate(float xleft){
+        float yOffset = Math.abs(xleft)/ getCanvasWidth() * getyRender().getMaxYValuePoint();
+        scrollTo(0, Math.round(yOffset));
     }
-
 }

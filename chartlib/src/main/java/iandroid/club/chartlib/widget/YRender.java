@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,6 +16,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import iandroid.club.chartlib.util.Utils;
+
+import static android.graphics.Region.Op.DIFFERENCE;
 
 
 /**
@@ -38,8 +41,11 @@ public class YRender extends View {
     private int minValue;
     private int hPerHeight;
     private int vPerValue;
-    private int height;
+
     List<Integer> mValues = new ArrayList<>();
+
+    //是否使用增长数据
+    private boolean increased = true;
 
     private int showLableCount = 6;
 
@@ -98,6 +104,7 @@ public class YRender extends View {
     }
 
     public int gethPerHeight() {
+        hPerHeight = Utils.dp2px(60);
         return hPerHeight;
     }
 
@@ -119,10 +126,9 @@ public class YRender extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        height = getHeight() - Utils.dp2px(50);//减去x坐标文字高度
-
-        hPerHeight = height / showLableCount - 1;// 分成四部分
+        // make sure the data cannot be drawn outside the content-rect
+        int clipRestoreCount = canvas.save();
+        canvas.clipRect(new Rect(0,offsetTop, getyWidthDefault(),getZeroLineHeight()));
 
         //y轴线
         drawYLine(canvas);
@@ -130,7 +136,9 @@ public class YRender extends View {
         // 设置左部的数字
         drawYLables(canvas, hPerHeight);
 
-
+        // Removes clipping rectangle
+        canvas.restoreToCount(clipRestoreCount);
+//        canvas.clipRect(new Rect(0,0, getyWidthDefault(),getMeasuredHeight()),DIFFERENCE);
     }
 
     public void setMaxValue(int maxValue) {
@@ -151,17 +159,26 @@ public class YRender extends View {
 
     public void generateValues() {
         mValues.clear();
+
         if (maxValue > minValue) {
-            vPerValue = (maxValue - minValue) / (showLableCount - 1);
+            if (!increased) {
+                vPerValue = (maxValue - minValue) / (showLableCount - 1);
+            } else {
+                vPerValue = 10;
+                double labelCount = Math.ceil(((double) maxValue - (double) minValue) / (double) vPerValue);
+                showLableCount = (int) labelCount;
+            }
+
             for (int i = 0; i < showLableCount; i++) {
                 int tempValue = minValue + vPerValue * i;
                 mValues.add(tempValue);
             }
         }
+
         Collections.sort(mValues, new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
-                return o2.compareTo(o1);
+                return o1.compareTo(o2);
             }
         });
         postInvalidate();
@@ -183,7 +200,7 @@ public class YRender extends View {
             int textHeight = Utils.calcTextHeight(yLabelPaint, yLabelText);
             int textWidth = Utils.calcTextWidth(yLabelPaint, yLabelText);
             canvas.drawText(yLabelText, getyWidthDefault() - textWidth,
-                    textHeight / 2 + i * hPerHeight + yTopOffSet ,
+                    getZeroLineHeight() - i * gethPerHeight(),
                     yLabelPaint);
         }
     }
@@ -195,19 +212,42 @@ public class YRender extends View {
      * @param canvas
      */
     private void drawYLine(Canvas canvas) {
-        canvas.drawLine(getyWidthDefault(), yTopOffSet-Utils.dp2px(20),
-                getyWidthDefault(), getZeroLineHeight()-Utils.dp2px(5)-Utils.dp2px(30), yLinePaint);
+        yLinePaint.setStrokeWidth(Utils.dp2px(0.5f));
+        float maxYValueYPosition = getTargetYValue(getShowLableCount());
+        canvas.drawLine(getyWidthDefault(), getZeroLineHeight(),
+                getyWidthDefault(), maxYValueYPosition, yLinePaint);
     }
 
+    public float getTargetYValue(float yPosition) {
+        return getZeroLineHeight() - gethPerHeight() * (yPosition + 1);
+    }
+
+    /**
+     * 最大值坐标位置
+     *
+     * @return
+     */
+    public float getMaxYValuePoint() {
+        return getTargetYValue(getShowLableCount());
+    }
 
     /**
      * 获取0坐标的位置
      */
     public int getZeroLineHeight() {
-        int perHeight = gethPerHeight();
-        float count = ((float) getMaxValue() - 0) / (float) getvPerValue();
-        int zeroHeight = Math.round(count * (float) perHeight  + getyTopOffSet());
-        return zeroHeight;
+        return getMeasuredHeight() - Utils.dp2px(50);
+    }
+
+    private int offsetTop;
+
+    /**
+     * 进行移动
+     * @param xleft
+     */
+    public void scrollInvalidate(float xWidth, float xleft){
+        float yOffset = Math.abs(xleft)/ xWidth * getMaxYValuePoint();
+        offsetTop = Math.round(yOffset);
+        scrollTo(0, offsetTop);
     }
 
 }

@@ -103,7 +103,7 @@ public class GrouthHeightActivity extends AppCompatActivity {
         generateMaxValue();
 
         int yMaxValue = (int)Math.ceil(maxValue);
-        yRender.setMinValue(0);
+        yRender.setMinValue(40);
         yRender.setMaxValue(yMaxValue);
         yRender.generateValues();
         lineEntitiesThird.clear();
@@ -202,7 +202,7 @@ public class GrouthHeightActivity extends AppCompatActivity {
 
 
         comboChart.getBaseBarChart().setRightLabels(rightLables);
-        comboChart.getBaseBarChart().setxLabels(xLables);
+        comboChart.setXLabels(xLables);
         comboChart.getBaseBarChart().setDataSets(dataSets);
 
         comboChart.animShow();

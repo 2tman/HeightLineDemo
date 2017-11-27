@@ -3,14 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="iandroid.club.heightlinedemo.GrouthHeightActivity">
+    android:layout_height="match_parent">
 
     <iandroid.club.chartlib.widget.ComboChart
         android:id="@+id/mComboChart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff">
+        android:background="#fff"
+        android:clipChildren="true">
+
+        <iandroid.club.chartlib.widget.XRender
+            android:id="@+id/xRender"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
 
         <iandroid.club.chartlib.widget.LineChart
             android:id="@+id/mBaseBarChart"
@@ -21,8 +26,7 @@
             android:id="@+id/yRender"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fff"
-            android:layout_marginTop="30dp"/>
+            android:background="#fff"/>
 
 
     </iandroid.club.chartlib.widget.ComboChart>

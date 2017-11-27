@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
@@ -11,6 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import java.util.List;
+
+import iandroid.club.chartlib.util.LogUtils;
 import iandroid.club.chartlib.util.Utils;
 
 
@@ -33,6 +37,11 @@ public class ComboChart extends FrameLayout {
      * 折线图
      */
     private LineChart lineChart;
+
+    /**
+     * x轴
+     */
+    private XRender xRender;
 
     /**
      * 右侧最大宽度
@@ -94,8 +103,13 @@ public class ComboChart extends FrameLayout {
     }
 
     public void animShow() {
-        maxRightWidth = lineChart.getTotalViewWidth() + yRender.getyWidthDefault();
-        lineChart.animShow(1);
+        lineChart.animShow();
+        xRender.animShow();
+    }
+
+    public void setXLabels(List<String> xLabels){
+        lineChart.setxLabels(xLabels);
+        xRender.setxLabels(xLabels);
     }
 
     public int getyLeftOffset() {
@@ -136,23 +150,27 @@ public class ComboChart extends FrameLayout {
 
         //绘制y轴最上方的文字显示
         canvas.drawText(showText, getyLeftOffset() - showTextWidth / 2, getyTopOffset(), textPaint);
+
+
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        yRender = (YRender) getChildAt(1);
-        lineChart = (LineChart) getChildAt(0);
-        lineChart.setyRender(yRender);
+        xRender = (XRender)getChildAt(0);
+        yRender = (YRender) getChildAt(2);
+        lineChart = (LineChart) getChildAt(1);
         //设置左侧起点
         yRender.setyWidthDefault(getyLeftOffset());
+        lineChart.setyRender(yRender);
+        xRender.setyRender(yRender);
     }
 
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        maxRightWidth = lineChart.getTotalViewWidth() + yRender.getyWidthDefault();
+        maxRightWidth = lineChart.getCanvasWidth()-lineChart.getScreenWidth();
     }
 
     /****************************************************************
@@ -250,12 +268,13 @@ public class ComboChart extends FrameLayout {
                  */
                 @Override
                 public int clampViewPositionHorizontal(View child, int left, int dx) {
+
                     if (left > 0) {
                         isLeftLimit = true;
-                        return 0;
+                        left = 0;
                     } else if (left < -maxRightWidth) {
                         isRightLimit = true;
-                        return -maxRightWidth;
+                        left = -maxRightWidth;
                     }
                     isRightLimit = false;
                     isLeftLimit = false;
@@ -268,7 +287,9 @@ public class ComboChart extends FrameLayout {
                         }
                     }
                     currentLeft = left;
-
+                    xRender.scrollTo(Math.abs(left), 0);
+                    yRender.scrollInvalidate(lineChart.getCanvasWidth(), left);
+                    lineChart.scrollInvalidate(left);
                     return left;
                 }
 

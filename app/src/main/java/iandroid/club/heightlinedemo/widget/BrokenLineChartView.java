@@ -33,7 +33,7 @@ public class BrokenLineChartView extends View {
 	// 左右间隔
 	private int LEFTRIGHTSPACE = 50;
 
-	private int leftrightlines = (RIGHTDOWNX - LEFTUPX) / LEFTRIGHTSPACE;;
+	private int leftrightlines = (RIGHTDOWNX - LEFTUPX) / LEFTRIGHTSPACE;
 
 	private boolean isOne;
 
@@ -99,7 +99,8 @@ public class BrokenLineChartView extends View {
 		// 设置宽度
 		getPaint().setStrokeWidth(2);
 		// 线的坐标点 （四个为一条线）
-		float[] pts = { LEFTUPX, LEFTUPY - 20, LEFTUPX, LEFTDOWNY, LEFTUPX, LEFTDOWNY, RIGHTDOWNX + 20, LEFTDOWNY };
+		float[] pts = { LEFTUPX, LEFTUPY - 20, LEFTUPX, LEFTDOWNY,
+				LEFTUPX, LEFTDOWNY, RIGHTDOWNX + 20, LEFTDOWNY };
 		// 画线
 		canvas.drawLines(pts, getPaint());
 

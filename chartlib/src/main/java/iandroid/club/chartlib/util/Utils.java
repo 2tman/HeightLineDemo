@@ -112,6 +112,11 @@ public abstract class Utils {
         return (int) (v * value + 0.5f);
     }
 
+    public static int dp2px(float value) {
+        float v = mMetrics.density;
+        return (int) (v * value + 0.5f);
+    }
+
     public static int sp2px(int value) {
         float v = mMetrics.scaledDensity;
         return (int) (v * value + 0.5f);

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -33,8 +34,6 @@ public class BaseChart extends View {
     private Paint hLinePaint;
     // 绘制X轴文本的画笔
     private Paint xLabelPaint;
-    // 是否使用动画
-    protected int flag;
     //每屏幕显示的最多的lable数量 奇数
     private int showLableCount = 5;
     //x轴的间距刻度
@@ -45,6 +44,11 @@ public class BaseChart extends View {
     private List<String> xLabels;
     //x轴数据
     private List<Integer> xLabelValues;
+
+    //是否绘制grid线条
+    protected boolean drawGridLine = true;
+    //是否绘制x轴线条
+    protected boolean drawXLine = false;
 
     public BaseChart(Context context) {
         super(context);
@@ -72,7 +76,7 @@ public class BaseChart extends View {
             xLabels.add("label5");
         }
 
-        xWidthStep = ScreenUtils.dp2px(context, 80);
+        xWidthStep = Utils.dp2px(60);
 
         xLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         hLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -136,7 +140,6 @@ public class BaseChart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         canvas.save();
 
         //y轴间隔高度
@@ -148,23 +151,29 @@ public class BaseChart extends View {
         //0坐标的高度
         int bottom = yRender.getZeroLineHeight();
         int lineWidth = getCanvasWidth();
-        // 绘制grid横向线条
-        drawToYLines(canvas, hPerHeight, lineWidth);
-        // 绘制zero的线条
-        drawZeroLine(canvas, bottom, lineWidth);
 
-        /**
-         * 绘制x轴文字
-         */
-        if (xLabels != null && xLabels.size() > 0) {
-            // 设置底部的文字
-            int columCount = xLabels.size();
-            int xTextHeight = bottom+Utils.dp2px(10);
-            drawXLables(canvas, barStep, xTextHeight, columCount);
+        int columCount = xLabels.size();
+        if(drawXLine) {
+            // 绘制zero的线条
+            drawZeroLine(canvas, bottom, lineWidth);
+            /**
+             * 绘制x轴文字
+             */
+            if (xLabels != null && xLabels.size() > 0) {
+                // 设置底部的文字
+                int xTextHeight = bottom + Utils.dp2px(10);
+                drawXLables(canvas, barStep, xTextHeight, columCount);
+            }
+        }
+
+        if (drawGridLine) {
+            // 绘制grid横向线条
+            drawToYLines(canvas, hPerHeight, lineWidth);
             //绘制grid纵向线条
             drawToXLine(canvas, barStep, bottom, columCount);
         }
         canvas.restore();
+
     }
 
 
@@ -176,6 +185,7 @@ public class BaseChart extends View {
     private void drawZeroLine(Canvas canvas, int height, int width) {
         //判断是否已经有0坐标
         if (!yRender.getmValues().contains(0)) {
+            xLinePaint.setStrokeWidth(Utils.dp2px(0.5f));
             canvas.drawLine(yRender.getyWidthDefault(),
                     height, width,
                     height
@@ -210,8 +220,8 @@ public class BaseChart extends View {
     private void drawToXLine(Canvas canvas, int step, int height, int columCount) {
         for (int i = 1; i < columCount; i++) {
             int left = step * i + yRender.getyWidthDefault();
-            canvas.drawLine(left, yRender.getyTopOffSet()-Utils.dp2px(20),
-                    left, height-Utils.dp2px(5), hLinePaint);
+            canvas.drawLine(left, yRender.getZeroLineHeight(),
+                    left, yRender.getMaxYValuePoint(), hLinePaint);
 
         }
 
@@ -223,9 +233,10 @@ public class BaseChart extends View {
      */
     private void drawToYLines(Canvas canvas, int hPerHeight, int width) {
 
-        for (int i = 0; i < yRender.getShowLableCount(); i++) {
-            canvas.drawLine(yRender.getyWidthDefault(), i * hPerHeight + yRender.getyTopOffSet(),
-                    width, i * hPerHeight + yRender.getyTopOffSet(), hLinePaint);
+        for (int i = 1; i < yRender.getShowLableCount(); i++) {
+            float yPoint = yRender.getZeroLineHeight() - i * hPerHeight;
+            canvas.drawLine(yRender.getyWidthDefault(), yPoint,
+                    width, yPoint, hLinePaint);
         }
     }
 
@@ -246,31 +257,7 @@ public class BaseChart extends View {
      * @return
      */
     public int getCanvasWidth() {
-        int factWidth = getScreenWidth() * getScreenCount();
-        return factWidth;
-    }
-
-    /**
-     * 屏幕宽度
-     *
-     * @return
-     */
-    public int getTotalViewWidth() {
-        return getCanvasWidth() //保证居中
-                - yRender.getyWidthDefault() * getScreenCount() * 2;
-    }
-
-    /**
-     * 屏幕宽度
-     *
-     * @return
-     */
-    public int getScreenCount() {
-        int count = xLabels.size() / showLableCount;
-        if (xLabels.size() % showLableCount != 0) {
-            count++;
-        }
-        return count;
+        return getXWidthStep() * xLabels.size();
     }
 
     /**
@@ -282,17 +269,6 @@ public class BaseChart extends View {
         return getScreenSize(getContext()).widthPixels;
     }
 
-    /**
-     * 每屏幕图标所在view的宽度
-     *
-     * @return
-     */
-    public int getViewWidth() {
-        return getScreenWidth() //保证居中
-                - yRender.getyWidthDefault() * 2 - getxLeftOffset() * 2;
-
-    }
-
 
     /**
      * x轴间隔宽度
@@ -302,32 +278,6 @@ public class BaseChart extends View {
     public int getXWidthStep() {
         return xWidthStep;
     }
-
-
-    /**
-     * 设置点击事件，是否显示数字
-     */
-    /*public boolean onTouchEvent(MotionEvent event) {
-        int step = (getWidth() - dp2px(30)) / 8;
-        int x = (int) event.getX();
-        for (int i = 0; i < 7; i++) {
-            if (x > (dp2px(15) + step * (i + 1) - dp2px(15))
-                    && x < (dp2px(15) + step * (i + 1) + dp2px(15))) {
-                text[i] = 1;
-                for (int j = 0; j < 7; j++) {
-                    if (i != j) {
-                        text[j] = 0;
-                    }
-                }
-                if (Looper.getMainLooper() == Looper.myLooper()) {
-                    invalidate();
-                } else {
-                    postInvalidate();
-                }
-            }
-        }
-        return super.onTouchEvent(event);
-    }*/
 
 
     /**
@@ -420,8 +370,10 @@ public class BaseChart extends View {
      * @return
      */
     public float findFinalYByValue(float yValue) {
-        int bottom = yRender.getZeroLineHeight();
-        float rh = bottom + -yValue * yRender.gethPerHeight() / yRender.getvPerValue();
+        float yValuePerc = yValue * yRender.gethPerHeight() / yRender.getvPerValue();
+
+        float top = yRender.getZeroLineHeight();
+        float rh = top - yValuePerc + yRender.gethPerHeight() * 4;
         return rh;
     }
 
@@ -432,6 +384,16 @@ public class BaseChart extends View {
      */
     public int findCenterX() {
         return (getScreenWidth() - yRender.getyWidthDefault() * 2) / 2;
+    }
+
+    public void animShow() {
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                invalidate();
+            }
+        }, 30);
+
     }
 
 }
