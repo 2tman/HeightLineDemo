@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,14 +14,24 @@ import android.widget.FrameLayout;
 
 import java.util.List;
 
-import iandroid.club.chartlib.util.LogUtils;
+import iandroid.club.chartlib.entity.PointEntity;
 import iandroid.club.chartlib.util.Utils;
 
 
 /**
- * 复合图 线形图
+ * @version 0.1
+ * @Date 创建时间：2017/11/27
+ * @Author jiarong
+ * @Description 复合图 线形图
  */
 public class ComboChart extends FrameLayout {
+
+    private List<PointEntity> pointEntities;
+
+    /**
+     * 是否x、y一起拖动
+     */
+    private boolean shouldDrawY;
 
     /**
      * 拖拽效果
@@ -41,7 +51,7 @@ public class ComboChart extends FrameLayout {
     /**
      * x轴
      */
-    private XRender xRender;
+    private XLineRender xRender;
 
     /**
      * 右侧最大宽度
@@ -51,7 +61,7 @@ public class ComboChart extends FrameLayout {
     /**
      * y轴顶部默认的文字
      */
-    private String showText = "身高(cm)";
+    private String showText = "";
 
     /**
      * y轴距离左侧的距离
@@ -73,6 +83,11 @@ public class ComboChart extends FrameLayout {
      */
     private float leftStartY;
 
+    private View v_left_bottom;
+
+    //当前xValue
+    private int currentXValue;
+
     public ComboChart(Context context) {
         super(context);
         initView();
@@ -93,6 +108,13 @@ public class ComboChart extends FrameLayout {
         this.showText = showText;
     }
 
+    public boolean isShouldDrawY() {
+        return shouldDrawY;
+    }
+
+    public void setShouldDrawY(boolean shouldDrawY) {
+        this.shouldDrawY = shouldDrawY;
+    }
 
     public LineChart getBaseBarChart() {
         return lineChart;
@@ -107,9 +129,8 @@ public class ComboChart extends FrameLayout {
         xRender.animShow();
     }
 
-    public void setXLabels(List<String> xLabels){
+    public void setXLabels(List<String> xLabels) {
         lineChart.setxLabels(xLabels);
-        xRender.setxLabels(xLabels);
     }
 
     public int getyLeftOffset() {
@@ -128,10 +149,9 @@ public class ComboChart extends FrameLayout {
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(Utils.sp2px(12));
 
-        mViewDragHelper = ViewDragHelper.create(this, callback);
+        mViewDragHelper = ViewDragHelper.create(this, 2.0f, callback);
         //拖动的方向
         mViewDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT | ViewDragHelper.EDGE_RIGHT);
-
     }
 
     @Override
@@ -148,29 +168,35 @@ public class ComboChart extends FrameLayout {
 
         super.onDraw(canvas);
 
-        //绘制y轴最上方的文字显示
-        canvas.drawText(showText, getyLeftOffset() - showTextWidth / 2, getyTopOffset(), textPaint);
-
+        if (!TextUtils.isEmpty(showText)) {
+            //绘制y轴最上方的文字显示
+            canvas.drawText(showText, getyLeftOffset() - showTextWidth / 2, getyTopOffset(), textPaint);
+        }
 
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        xRender = (XRender)getChildAt(0);
-        yRender = (YRender) getChildAt(2);
-        lineChart = (LineChart) getChildAt(1);
+        lineChart = (LineChart) getChildAt(0);
+        yRender = (YRender) getChildAt(1);
+        xRender = (XLineRender) getChildAt(2);
+        v_left_bottom = getChildAt(3);
         //设置左侧起点
         yRender.setyWidthDefault(getyLeftOffset());
         lineChart.setyRender(yRender);
-        xRender.setyRender(yRender);
+        xRender.setLineChart(lineChart);
     }
 
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        maxRightWidth = lineChart.getCanvasWidth()-lineChart.getScreenWidth();
+        maxRightWidth = lineChart.getCanvasWidth() - lineChart.getScreenWidth();
+
+        LayoutParams layoutParams = (LayoutParams) v_left_bottom.getLayoutParams();
+        layoutParams.topMargin = yRender.getZeroLineHeight();
+        v_left_bottom.setLayoutParams(layoutParams);
     }
 
     /****************************************************************
@@ -287,9 +313,16 @@ public class ComboChart extends FrameLayout {
                         }
                     }
                     currentLeft = left;
-                    xRender.scrollTo(Math.abs(left), 0);
-                    yRender.scrollInvalidate(lineChart.getCanvasWidth(), left);
-                    lineChart.scrollInvalidate(left);
+                    if (shouldDrawY) {
+                        xRender.scrollTo(Math.abs(left), 0);
+                        yRender.scrollInvalidate(lineChart.getCanvasWidth(), left * yPercent);
+                        lineChart.scrollInvalidate(left * yPercent);
+                    } else {
+                        xRender.scrollTo(Math.abs(left), 0);
+                        yRender.scrollInvalidate(lineChart.getCanvasWidth(), left * yPercentWeight);
+                        lineChart.scrollInvalidate(left * yPercentWeight);
+                    }
+
                     return left;
                 }
 
@@ -348,5 +381,71 @@ public class ComboChart extends FrameLayout {
         int centerX = lineChart.findCenterX();
         mViewDragHelper.smoothSlideViewTo(lineChart, -(targetX - centerX) - lineChart.getXWidthStep() / 2, 0);
         ViewCompat.postInvalidateOnAnimation(ComboChart.this);
+    }
+
+    /**
+     * 设置当前刻度
+     *
+     * @param currentXValue
+     */
+    public void setCurrentXValue(int currentXValue) {
+        this.currentXValue = currentXValue;
+        lineChart.setCurrentXValue(currentXValue);
+        //设置x轴最大可滑动距离为当前年龄 往后+一岁 12个月
+        int maxXLimitValue = currentXValue + 12;
+        maxRightWidth = lineChart.findFinalPointXByXValue(maxXLimitValue);
+        maxRightWidth -= lineChart.getScreenWidth();
+    }
+
+    private float yPercent = 1.4f;
+    private float yPercentWeight = 0.7f;
+
+    /**
+     * 落点
+     *
+     * @param pointEntities
+     */
+    public void setPointEntities(final List<PointEntity> pointEntities) {
+        this.pointEntities = pointEntities;
+
+        lineChart.setPoints(pointEntities);
+
+        //移动到最近添加的一条记录
+        if (pointEntities != null && pointEntities.size() > 0) {
+            PointEntity recentPoint = pointEntities.get(pointEntities.size() - 1);
+            float entityX = lineChart.findFinalPointXByXValue(recentPoint.getxLableValue());
+            //y坐标
+            float entityY = lineChart.findFinalYByValue(recentPoint.getmValue());
+
+            if (entityX > 0) {
+                int finalX = Math.round(entityX) - lineChart.getScreenWidth() / 2;
+                int finalY = Math.round(entityY + yRender.getZeroLineHeight() / 2);
+
+                if (finalX > maxRightWidth) {
+                    finalX = maxRightWidth;
+                }
+                //移动到这个位置
+                if (mViewDragHelper.smoothSlideViewTo(lineChart, -finalX, 0)) {
+                    if (shouldDrawY) {
+                        xRender.scrollTo(Math.abs(finalX), 0);
+                        yRender.scrollInvalidate(lineChart.getCanvasWidth(), finalX * yPercent);
+                        lineChart.scrollInvalidate(finalX * yPercent);
+                    } else {
+                        xRender.scrollTo(Math.abs(finalX), 0);
+                        yRender.scrollInvalidate(lineChart.getCanvasWidth(), finalX * yPercentWeight);
+                        lineChart.scrollInvalidate(finalX * yPercentWeight);
+                    }
+
+                    ViewCompat
+                            .postInvalidateOnAnimation(ComboChart.this);
+
+                }
+
+            }
+        }else {
+            ViewCompat
+                    .postInvalidateOnAnimation(ComboChart.this);
+        }
+
     }
 }

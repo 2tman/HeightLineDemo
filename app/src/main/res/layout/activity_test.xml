@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<iandroid.club.heightlinedemo.widget.ChartGraph xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,12 +7,11 @@
     android:padding="20dp"
     android:background="@android:color/white">
 
-    <iandroid.club.heightlinedemo.widget.ChartView
+    <com.yyl.multiview.RecyclerViewMultiHeader
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="50dp"/>
-    <iandroid.club.heightlinedemo.widget.ChartYView
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"/>
-</iandroid.club.heightlinedemo.widget.ChartGraph>
+        android:layout_height="wrap_content"
+        app:viewState="video"
+        app:videoScale="0.5625"
+        android:id="@+id/mRecycler">
+    </com.yyl.multiview.RecyclerViewMultiHeader>
+</LinearLayout>

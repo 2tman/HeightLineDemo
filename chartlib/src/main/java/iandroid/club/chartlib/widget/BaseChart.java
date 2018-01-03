@@ -22,7 +22,10 @@ import iandroid.club.chartlib.util.Utils;
 
 
 /**
- * 柱状图基类
+ * @version 0.1
+ * @Date 创建时间：2017/11/27
+ * @Author jiarong
+ * @Description 图表基类
  */
 public class BaseChart extends View {
 
@@ -32,10 +35,7 @@ public class BaseChart extends View {
     private Paint xLinePaint;
     // 坐标轴水平内部 虚线画笔
     private Paint hLinePaint;
-    // 绘制X轴文本的画笔
-    private Paint xLabelPaint;
-    //每屏幕显示的最多的lable数量 奇数
-    private int showLableCount = 5;
+
     //x轴的间距刻度
     private int xWidthStep;
     //x轴文本的高度
@@ -47,8 +47,6 @@ public class BaseChart extends View {
 
     //是否绘制grid线条
     protected boolean drawGridLine = true;
-    //是否绘制x轴线条
-    protected boolean drawXLine = false;
 
     public BaseChart(Context context) {
         super(context);
@@ -80,14 +78,14 @@ public class BaseChart extends View {
 
         xLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         hLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        xLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
 
         // 给画笔设置颜色
         xLinePaint.setColor(Color.BLACK);
         xLinePaint.setStrokeWidth(Utils.dp2px(1));
 
         hLinePaint.setColor(Color.LTGRAY);
-        xLabelPaint.setColor(Color.BLACK);
+
 
     }
 
@@ -124,10 +122,6 @@ public class BaseChart extends View {
         return xLabelHeight;
     }
 
-    public void setShowLableCount(int showLableCount) {
-        this.showLableCount = showLableCount;
-    }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -153,18 +147,6 @@ public class BaseChart extends View {
         int lineWidth = getCanvasWidth();
 
         int columCount = xLabels.size();
-        if(drawXLine) {
-            // 绘制zero的线条
-            drawZeroLine(canvas, bottom, lineWidth);
-            /**
-             * 绘制x轴文字
-             */
-            if (xLabels != null && xLabels.size() > 0) {
-                // 设置底部的文字
-                int xTextHeight = bottom + Utils.dp2px(10);
-                drawXLables(canvas, barStep, xTextHeight, columCount);
-            }
-        }
 
         if (drawGridLine) {
             // 绘制grid横向线条
@@ -176,43 +158,6 @@ public class BaseChart extends View {
 
     }
 
-
-    /**
-     * 绘制x轴0坐标的线条
-     *
-     * @param canvas
-     */
-    private void drawZeroLine(Canvas canvas, int height, int width) {
-        //判断是否已经有0坐标
-        if (!yRender.getmValues().contains(0)) {
-            xLinePaint.setStrokeWidth(Utils.dp2px(0.5f));
-            canvas.drawLine(yRender.getyWidthDefault(),
-                    height, width,
-                    height
-                    , xLinePaint);
-
-            //画zero的文字
-        }
-
-    }
-
-    /**
-     * 绘制X轴Labels
-     */
-    private void drawXLables(Canvas canvas, int step, int height, int columCount) {
-        xLabelPaint.setTextAlign(Align.CENTER);
-        xLabelPaint.setTextSize(Utils.sp2px(9));
-        xLabelPaint.setAntiAlias(true);
-        xLabelPaint.setStyle(Paint.Style.FILL);
-        for (int i = 0; i < columCount; i++) {
-            int left = step * i + yRender.getyWidthDefault();
-            if (i == 0) {
-                int textWidth = ScreenUtils.calcTextWidth(xLabelPaint, xLabels.get(i));
-                left += textWidth / 2;
-            }
-            canvas.drawText(xLabels.get(i), left, height, xLabelPaint);
-        }
-    }
 
     /**
      * 绘制纵向线条
@@ -318,14 +263,14 @@ public class BaseChart extends View {
     /**
      * 根据xLabel查找当前的x位置
      *
-     * @param xValue
+     * @param xLabel
      * @return
      */
-    public int findFinalPointXByXLabel(String xValue) {
+    public int findFinalPointXByXLabel(String xLabel) {
         int targetIndex = 0;
         if (xLabels != null && xLabels.size() > 0) {
             for (int i = 0; i < xLabels.size(); i++) {
-                if (xLabels.get(i).equals(xValue)) {
+                if (xLabels.get(i).equals(xLabel)) {
                     targetIndex = i;
                     break;
                 }
@@ -373,7 +318,10 @@ public class BaseChart extends View {
         float yValuePerc = yValue * yRender.gethPerHeight() / yRender.getvPerValue();
 
         float top = yRender.getZeroLineHeight();
-        float rh = top - yValuePerc + yRender.gethPerHeight() * 4;
+        if (yRender.getvPerValue() == 0) {
+            return top - yValuePerc;
+        }
+        float rh = top - yValuePerc + yRender.gethPerHeight() * (yRender.getMinValue() / yRender.getvPerValue());
         return rh;
     }
 

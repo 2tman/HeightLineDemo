@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven' //this way we can find the android-maven in jcenter
+group='2tman'
 
 android {
     compileSdkVersion 26
@@ -21,8 +23,13 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs' //this way we can find the .aar file in libs folder
+    }
+}
+
 dependencies {
-//    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:26.+'
-//    compile files('libs/mpandroidchartlibrary-1-7-4.jar')
 }

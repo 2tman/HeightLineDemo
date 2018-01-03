@@ -5,31 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <iandroid.club.chartlib.widget.ComboChart
-        android:id="@+id/mComboChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff"
-        android:clipChildren="true">
-
-        <iandroid.club.chartlib.widget.XRender
-            android:id="@+id/xRender"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-
-        <iandroid.club.chartlib.widget.LineChart
-            android:id="@+id/mBaseBarChart"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-
-        <iandroid.club.chartlib.widget.YRender
-            android:id="@+id/yRender"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fff"/>
-
-
-    </iandroid.club.chartlib.widget.ComboChart>
+   <include layout="@layout/layout_growth"/>
 
 
 </RelativeLayout>

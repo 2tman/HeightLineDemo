@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="iandroid.club.heightlinedemo.GrouthWeightActivity">
-<iandroid.club.heightlinedemo.widget.BrokenLineChartView
-    android:id="@+id/linechart"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+
+    <iandroid.club.heightlinedemo.widget.BrokenLineChartView
+        android:id="@+id/linechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>

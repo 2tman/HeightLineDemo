@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="体重(cm)"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:id="@+id/tv_title"/>
+    <iandroid.club.chartlib.widget.ComboChart
+        android:id="@+id/mComboChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:clipChildren="true">
+
+
+        <iandroid.club.chartlib.widget.LineChart
+            android:id="@+id/mBaseBarChart"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <iandroid.club.chartlib.widget.YRender
+            android:id="@+id/yRender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"/>
+
+        <iandroid.club.chartlib.widget.XLineRender
+            android:id="@+id/xRender"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="#fff"/>
+
+        <View
+            android:id="@+id/v_left_bottom"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:background="#fff"/>
+    </iandroid.club.chartlib.widget.ComboChart>
+</merge>
