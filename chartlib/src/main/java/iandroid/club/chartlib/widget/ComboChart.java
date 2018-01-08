@@ -313,6 +313,7 @@ public class ComboChart extends FrameLayout {
                         }
                     }
                     currentLeft = left;
+                    generateWeightYScrollPercent(Math.abs(left));
                     if (shouldDrawY) {
                         xRender.scrollTo(Math.abs(left), 0);
                         yRender.scrollInvalidate(lineChart.getCanvasWidth(), left * yPercent);
@@ -398,7 +399,20 @@ public class ComboChart extends FrameLayout {
     }
 
     private float yPercent = 1.4f;
-    private float yPercentWeight = 0.7f;
+    private float yPercentWeight = 0.2f;
+
+    private void generateWeightYScrollPercent(float finalX){
+        int x7 = lineChart.findFinalPointXByXValue(7*12);
+
+        int x6 = lineChart.findFinalPointXByXValue(6*12);
+        if(finalX>=x7){
+            yPercentWeight = 1.4f;
+        }else if(finalX>=x6){
+            yPercentWeight = 0.8f;
+        }else{
+            yPercentWeight = 0f;
+        }
+    }
 
     /**
      * 落点
@@ -424,6 +438,7 @@ public class ComboChart extends FrameLayout {
                 if (finalX > maxRightWidth) {
                     finalX = maxRightWidth;
                 }
+                generateWeightYScrollPercent(finalX);
                 //移动到这个位置
                 if (mViewDragHelper.smoothSlideViewTo(lineChart, -finalX, 0)) {
                     if (shouldDrawY) {
@@ -435,7 +450,6 @@ public class ComboChart extends FrameLayout {
                         yRender.scrollInvalidate(lineChart.getCanvasWidth(), finalX * yPercentWeight);
                         lineChart.scrollInvalidate(finalX * yPercentWeight);
                     }
-
                     ViewCompat
                             .postInvalidateOnAnimation(ComboChart.this);
 
@@ -446,6 +460,7 @@ public class ComboChart extends FrameLayout {
             ViewCompat
                     .postInvalidateOnAnimation(ComboChart.this);
         }
+        lineChart.invalidate();
 
     }
 }
