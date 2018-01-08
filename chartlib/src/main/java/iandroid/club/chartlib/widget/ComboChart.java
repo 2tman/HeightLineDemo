@@ -406,7 +406,7 @@ public class ComboChart extends FrameLayout {
 
         int x6 = lineChart.findFinalPointXByXValue(6*12);
         if(finalX>=x7){
-            yPercentWeight = 1.4f;
+            yPercentWeight = 1f;
         }else if(finalX>=x6){
             yPercentWeight = 0.8f;
         }else{
