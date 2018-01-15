@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -261,9 +262,9 @@ public class YRender extends View {
 
         if(offsetTop<maxYValueYPosition){
             offsetTop = Math.round(maxYValueYPosition);
-            return;
         }
         scrollTo(0, offsetTop);
+//        ViewCompat.postInvalidateOnAnimation(this);
     }
 
 }

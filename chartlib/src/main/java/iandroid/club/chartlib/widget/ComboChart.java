@@ -398,18 +398,18 @@ public class ComboChart extends FrameLayout {
         maxRightWidth -= lineChart.getScreenWidth();
     }
 
-    private float yPercent = 1.4f;
+    private float yPercent = 1.3f;
     private float yPercentWeight = 0.2f;
 
-    private void generateWeightYScrollPercent(float finalX){
-        int x7 = lineChart.findFinalPointXByXValue(7*12);
+    private void generateWeightYScrollPercent(float finalX) {
+        int x7 = lineChart.findFinalPointXByXValue(7 * 12);
 
-        int x6 = lineChart.findFinalPointXByXValue(6*12);
-        if(finalX>=x7){
-            yPercentWeight = 1f;
-        }else if(finalX>=x6){
+        int x6 = lineChart.findFinalPointXByXValue(6 * 12);
+        if (finalX >= x7) {
+            yPercentWeight = 1.2f;
+        } else if (finalX >= x6) {
             yPercentWeight = 0.8f;
-        }else{
+        } else {
             yPercentWeight = 0f;
         }
     }
@@ -438,29 +438,18 @@ public class ComboChart extends FrameLayout {
                 if (finalX > maxRightWidth) {
                     finalX = maxRightWidth;
                 }
-                generateWeightYScrollPercent(finalX);
-                //移动到这个位置
-                if (mViewDragHelper.smoothSlideViewTo(lineChart, -finalX, 0)) {
-                    if (shouldDrawY) {
-                        xRender.scrollTo(Math.abs(finalX), 0);
-                        yRender.scrollInvalidate(lineChart.getCanvasWidth(), finalX * yPercent);
-                        lineChart.scrollInvalidate(finalX * yPercent);
-                    } else {
-                        xRender.scrollTo(Math.abs(finalX), 0);
-                        yRender.scrollInvalidate(lineChart.getCanvasWidth(), finalX * yPercentWeight);
-                        lineChart.scrollInvalidate(finalX * yPercentWeight);
-                    }
-                    ViewCompat
-                            .postInvalidateOnAnimation(ComboChart.this);
+
+                if(mViewDragHelper.smoothSlideViewTo(lineChart,-finalX, 0)) {
+                    callback.clampViewPositionHorizontal(lineChart, -finalX, 0);
+                    ViewCompat.postInvalidateOnAnimation(ComboChart.this);
 
                 }
 
             }
-        }else {
+        } else {
             ViewCompat
                     .postInvalidateOnAnimation(ComboChart.this);
         }
-        lineChart.invalidate();
 
     }
 }

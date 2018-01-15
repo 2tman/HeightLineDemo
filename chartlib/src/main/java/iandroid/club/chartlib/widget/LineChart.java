@@ -10,6 +10,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Shader;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -435,9 +436,10 @@ public class LineChart extends BaseChart {
         yOffset = Math.abs(xleft) / getCanvasWidth() * getyRender().getMaxYValuePoint();
         offsetTop = Math.round(yOffset);
         if (offsetTop < getyRender().getMaxYValueYPosition()) {
-            return;
+            offsetTop = Math.round(getyRender().getMaxYValueYPosition());
         }
         scrollTo(0, Math.round(yOffset));
+//        ViewCompat.postInvalidateOnAnimation(this);
     }
 
     /**
