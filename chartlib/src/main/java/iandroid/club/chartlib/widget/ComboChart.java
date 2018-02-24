@@ -447,8 +447,25 @@ public class ComboChart extends FrameLayout {
 
             }
         } else {
-            ViewCompat
-                    .postInvalidateOnAnimation(ComboChart.this);
+            if(currentXValue>0) {
+                float entityX = lineChart.findFinalPointXByXValue(currentXValue);
+                if (entityX > 0) {
+                    int finalX = Math.round(entityX) - lineChart.getScreenWidth() / 2;
+
+                    if (mViewDragHelper.smoothSlideViewTo(lineChart, -finalX, 0)) {
+                        callback.clampViewPositionHorizontal(lineChart, -finalX, 0);
+                        ViewCompat.postInvalidateOnAnimation(ComboChart.this);
+
+                    }
+                }else {
+                    ViewCompat
+                            .postInvalidateOnAnimation(ComboChart.this);
+                }
+            }else {
+                ViewCompat
+                        .postInvalidateOnAnimation(ComboChart.this);
+            }
+
         }
 
     }
